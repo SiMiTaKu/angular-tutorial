@@ -33,7 +33,9 @@ export class HeroSearchComponent implements OnInit {
       distinctUntilChanged(),
 
       // 検索語が変わる度に、新しい検索observableにスイッチする
-      switchMap((term: string) => this.heroService.searchHeroes(term)),
+      switchMap((term: string) =>
+        this.heroService.searchHeroes(term)
+      ),
     );
   }
 }
