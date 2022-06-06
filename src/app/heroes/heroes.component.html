@@ -1,4 +1,9 @@
 <h2>My Heroes</h2>
+<div class = "loding" *ngIf="loding">
+  <p>
+    Loding... Wait for second...
+  </p>
+</div>
 <ul class="heroes" *ngIf="heroes$ | async as heroes">
   <li *ngFor="let hero of heroes">
     <a routerLink="/detail/{{hero.id}}">
@@ -8,12 +13,12 @@
     <button type="button" class="delete" title="delete hero" (click)="delete(hero)">x</button>
   </li>
 </ul>
-<div>
+<form>
   <label for="new-hero">Hero name: </label>
-  <input id="new-hero" #heroName />
+  <input id="new-hero" [formControl]="newHero" #heroName>
 
   <!-- (click) 入力値をadd()に渡したあと、入力をクリアする -->
   <button type="button" class="add-button" (click)="add(heroName.value); heroName.value=''">
     Add hero
   </button>
-</div>
+</form>

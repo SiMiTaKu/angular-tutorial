@@ -41,7 +41,6 @@ export class HeroState {
     return state.selectedHero;
   }
 
-  //////// Load methods //////////
   /** サーバーからヒーローを取得する */
   @Action(HeroAction.Load)
   load(ctx: StateContext<HeroStateModel>) {
@@ -70,7 +69,6 @@ export class HeroState {
   }
 
   //////// Save methods //////////
-
   /** POST: サーバーに新しいヒーローを登録する */
   @Action(HeroAction.Add)
   addHero(ctx: StateContext<HeroStateModel>, action: HeroAction.Add) {
