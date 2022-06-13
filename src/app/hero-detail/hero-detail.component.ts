@@ -3,6 +3,10 @@ import { Hero }                    from "../hero";
 import { ActivatedRoute }          from '@angular/router';
 import { Location }                from '@angular/common';
 import { HeroService }             from '../hero.service';
+import {HeroAction}    from "../hero.actions";
+import {Select, Store} from "@ngxs/store";
+import {HeroState}     from "../hero.state";
+import {Observable}                from "rxjs";
 
 @Component({
   selector: 'app-hero-detail',
@@ -10,12 +14,12 @@ import { HeroService }             from '../hero.service';
   styleUrls: ['./hero-detail.component.css']
 })
 export class HeroDetailComponent implements OnInit {
-  @Input() hero?: Hero;
+  @Select(HeroState.selectedHero) hero$?: Observable<Hero>
 
   constructor(
     private route: ActivatedRoute,
-    private heroService: HeroService,
-    private location: Location
+    private location: Location,
+    private store: Store
   ) {}
 
   ngOnInit(): void {
@@ -24,18 +28,16 @@ export class HeroDetailComponent implements OnInit {
 
   getHero(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.heroService.getHero(id)
-      .subscribe(hero => this.hero = hero);
+
+    this.store.dispatch(new HeroAction.Select(id));
   }
 
   goBack(): void {
     this.location.back();
   }
 
-  save(): void {
-    if (this.hero) {
-      this.heroService.updateHero(this.hero)
-        .subscribe(() => this.goBack());
-    }
+  save(hero: Hero): void {
+    this.store.dispatch(new HeroAction.Update(hero))
+    .subscribe(() => this.goBack());
   }
 }
